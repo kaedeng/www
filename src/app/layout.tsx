@@ -5,7 +5,53 @@ import { Providers } from '@/providers/theme'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: "Kae's Portfolio",
+  metadataBase: new URL('https://kaelem.dev'),
+  title: {
+    default: "Kae's Portfolio",
+    template: "%s | Kae's Portfolio",
+  },
+  description:
+    'Full Stack Software Engineer & CS Student at Colorado School of Mines',
+  keywords: [
+    'software engineer',
+    'full stack developer',
+    'full stack',
+    'portfolio',
+    'Kae',
+    'Kaelem',
+    'Kaelem Deng',
+    'Colorado School of Mines',
+    'TypeScript',
+    'React',
+    'Next.js',
+    'Rust',
+    'Python',
+    'Java',
+    'Spring',
+    'AWS',
+    'Kubernetes',
+    'Docker',
+  ],
+  authors: [{ name: 'Kae' }],
+  openGraph: {
+    title: "Kae's Portfolio",
+    description:
+      'Full Stack Software Engineer & CS Student at Colorado School of Mines',
+    url: 'https://kaelem.dev',
+    siteName: "Kae's Portfolio",
+    type: 'website',
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '48x48' },
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+    ],
+  },
 }
 
 export default function RootLayout({
