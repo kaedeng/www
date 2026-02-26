@@ -1,17 +1,11 @@
 import type { Metadata } from 'next'
-import { Roboto } from 'next/font/google'
+import { GeistSans } from 'geist/font/sans'
 import { Analytics } from '@vercel/analytics/react'
+import { Providers } from '@/providers/theme'
 import './globals.css'
 
-const roboto = Roboto({
-  weight: ['300', '400', '500', '700'],
-  subsets: ['latin'],
-  display: 'swap',
-  variable: '--font-roboto',
-})
-
 export const metadata: Metadata = {
-  title: "Kaelem Deng's Portfolio Website",
+  title: "Kae's Portfolio",
 }
 
 export default function RootLayout({
@@ -20,9 +14,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={roboto.variable}>
+    <html lang="en" className={GeistSans.variable} suppressHydrationWarning>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <Analytics />
       </body>
     </html>
