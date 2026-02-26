@@ -8,6 +8,10 @@ const securityHeaders = [
   { key: 'X-XSS-Protection', value: '1; mode=block' },
   { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
   {
+    key: 'Access-Control-Allow-Origin',
+    value: process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000',
+  },
+  {
     key: 'Permissions-Policy',
     value: 'camera=(), microphone=(), geolocation=()',
   },
