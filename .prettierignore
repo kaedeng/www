@@ -12,6 +12,9 @@ out/
 build
 dist
 
+# github
+.github/
+
 # misc
 .DS_Store
 *.pem
