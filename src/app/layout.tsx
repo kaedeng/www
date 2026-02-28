@@ -3,6 +3,7 @@ import { GeistSans } from 'geist/font/sans'
 import { Analytics } from '@vercel/analytics/next'
 import { Providers } from '@/providers/theme'
 import './globals.css'
+import Navbar from '@/components/navbar'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://kaelem.dev'),
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
+      // Favicon from Noto Emojis <3 <3
       { url: '/favicon.svg', type: 'image/svg+xml' },
       { url: '/favicon.ico', sizes: '48x48' },
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -62,7 +64,10 @@ export default function RootLayout({
   return (
     <html lang="en" className={GeistSans.variable} suppressHydrationWarning>
       <body>
-        <Providers>{children}</Providers>
+        <Providers>
+          <Navbar />
+          <div className="mx-auto max-w-2xl px-4">{children}</div>
+        </Providers>
         <Analytics />
       </body>
     </html>
