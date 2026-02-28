@@ -4,8 +4,10 @@ import Link from 'next/link'
 import { SiGithub, SiLinkedin } from 'react-icons/si'
 import { MdOutlineEmail } from 'react-icons/md'
 import { useEffect, useRef, useState } from 'react'
+import Image from 'next/image'
 import type { IconType } from 'react-icons'
 import styles from './navbar.module.css'
+import { useTheme } from '@/hooks/useTheme'
 
 // --- Config ---
 
@@ -56,6 +58,25 @@ const ICON_LINKS: IconLink[] = [
   },
   { href: 'mailto:contact@kaelem.dev', icon: MdOutlineEmail, label: 'Email' },
 ]
+
+function ThemeToggle() {
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => setMounted(true), [])
+
+  if (!mounted) return <div className="h-5 w-5" />
+
+  return (
+    <button
+      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+      aria-label="Toggle theme"
+      className={`${styles.mutedLink} flex self-center items-center opacity-70 transition-opacity hover:opacity-100`}
+    >
+      <Image src="/favicon.svg" alt="Theme toggle" width={20} height={20} />
+    </button>
+  )
+}
 
 // Scramble
 const SCRAMBLE_CHARS = '!@#$%^&*()=+[]{}|;:,.<>?/~`among-us_67'
@@ -125,7 +146,6 @@ function ScrambleName() {
   )
 }
 
-// Pronunciation label, pronouns, and age displayed beside the name
 function NameMeta() {
   return (
     <span className={`${styles.muted} hidden text-xs sm:inline`}>
@@ -148,9 +168,12 @@ export default function Navbar() {
   return (
     <header className={styles.navbar}>
       <div className="mx-auto flex max-w-2xl items-center justify-between px-4 py-4">
-        <div className="flex items-baseline gap-2">
-          <ScrambleName />
-          <NameMeta />
+        <div className="flex items-center gap-2">
+          <ThemeToggle />
+          <div className="flex items-baseline gap-2">
+            <ScrambleName />
+            <NameMeta />
+          </div>
         </div>
 
         <nav className="flex items-center gap-5">
