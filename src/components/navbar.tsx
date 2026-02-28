@@ -9,8 +9,6 @@ import type { IconType } from 'react-icons'
 import styles from './navbar.module.css'
 import { useTheme } from '@/hooks/useTheme'
 
-// --- Config ---
-
 const NAME = 'Kae'
 const IPA_LABEL = '/ˈkeɪ/'
 const IPA_HREF = 'https://www.leskoff.com/s01763-0'
@@ -31,39 +29,90 @@ interface NavLink {
   label: string
 }
 
-interface IconLink {
-  href: string
-  icon: IconType
-  label: string
-  external?: boolean
-}
-
 const NAV_LINKS: NavLink[] = [
   { href: '#experience', label: 'Experience' },
   { href: '#projects', label: 'Projects' },
 ]
 
-const ICON_LINKS: IconLink[] = [
+interface ObfuscatedIconLink {
+  encoded: string
+  icon: IconType
+  label: string
+  external?: boolean
+}
+
+// nooo more scraping D:
+const OBFUSCATED_ICON_LINKS: ObfuscatedIconLink[] = [
   {
-    href: 'https://linkedin.com/in/kaelem-deng',
+    encoded: 'aHR0cHM6Ly9saW5rZWRpbi5jb20vaW4va2FlbGVtLWRlbmc=',
     icon: SiLinkedin,
     label: 'LinkedIn',
     external: true,
   },
   {
-    href: 'https://github.com/kaedeng',
+    encoded: 'aHR0cHM6Ly9naXRodWIuY29tL2thZWRlbmc=',
     icon: SiGithub,
     label: 'GitHub',
     external: true,
   },
-  { href: 'mailto:contact@kaelem.dev', icon: MdOutlineEmail, label: 'Email' },
+  {
+    encoded: 'bWFpbHRvOmNvbnRhY3RAa2FlbGVtLmRldg==',
+    icon: MdOutlineEmail,
+    label: 'Email',
+  },
 ]
+
+function useHumanVerified() {
+  const [verified, setVerified] = useState(false)
+
+  useEffect(() => {
+    if (verified) return
+    const mark = () => setVerified(true)
+    const events = ['mousemove', 'touchstart', 'keydown'] as const
+    events.forEach(e => window.addEventListener(e, mark, { once: true }))
+    return () => {
+      events.forEach(e => window.removeEventListener(e, mark))
+    }
+  }, [verified])
+
+  return verified
+}
+
+function ObfuscatedLink({
+  encoded,
+  icon: Icon,
+  label,
+  external,
+}: ObfuscatedIconLink) {
+  const isHuman = useHumanVerified()
+  const href = isHuman ? atob(encoded) : '#'
+
+  return (
+    <a
+      href={href}
+      aria-label={label}
+      className={styles.mutedLink}
+      onClick={e => {
+        if (!isHuman) e.preventDefault()
+      }}
+      {...(external &&
+        isHuman && {
+          target: '_blank',
+          rel: 'noopener noreferrer',
+        })}
+    >
+      <Icon size={16} />
+    </a>
+  )
+}
 
 function ThemeToggle() {
   const { theme, setTheme } = useTheme()
   const [mounted, setMounted] = useState(false)
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    queueMicrotask(() => setMounted(true))
+  }, [])
 
   if (!mounted) return <div className="h-5 w-5" />
 
@@ -188,19 +237,8 @@ export default function Navbar() {
           ))}
 
           <div className="flex items-center gap-3">
-            {ICON_LINKS.map(({ href, icon: Icon, label, external }) => (
-              <a
-                key={label}
-                href={href}
-                aria-label={label}
-                className={styles.mutedLink}
-                {...(external && {
-                  target: '_blank',
-                  rel: 'noopener noreferrer',
-                })}
-              >
-                <Icon size={16} />
-              </a>
+            {OBFUSCATED_ICON_LINKS.map(link => (
+              <ObfuscatedLink key={link.label} {...link} />
             ))}
           </div>
         </nav>
