@@ -1,7 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { SiGithub, SiLinkedin } from 'react-icons/si'
+import { SiGithub } from 'react-icons/si'
+import { FaLinkedin } from 'react-icons/fa'
 import { MdOutlineEmail } from 'react-icons/md'
 import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -45,7 +46,7 @@ interface ObfuscatedIconLink {
 const OBFUSCATED_ICON_LINKS: ObfuscatedIconLink[] = [
   {
     encoded: 'aHR0cHM6Ly9saW5rZWRpbi5jb20vaW4va2FlbGVtLWRlbmc=',
-    icon: SiLinkedin,
+    icon: FaLinkedin,
     label: 'LinkedIn',
     external: true,
   },
